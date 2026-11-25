@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a"><title>ZyxCode</title>
+<style>
+:root{--bg:#0a0a0a;--pn:#141414;--pn2:#1b1b1b;--ln:#262626;--tx:#ededed;--mut:#8a8a8a;--wm:#151515;--wm2:#1e1e1e;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;height:100%;height:100dvh}
+body{background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#app{display:flex;flex-direction:column;height:100%;max-width:none;margin:0}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+button{font:inherit;color:inherit;cursor:pointer}
+.ico{background:none;border:0;color:var(--mut);padding:8px;display:flex;border-radius:10px}
+.tabs{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid var(--ln);min-height:54px}
+.tl{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none}.tl::-webkit-scrollbar{display:none}
+.tab{flex:none;display:flex;align-items:center;gap:8px;border-radius:10px;padding:8px 10px 8px 12px;max-width:46vw;color:var(--mut);cursor:pointer}
+.tab.on{background:#242424;color:var(--tx)}
+.spin{width:8px;height:8px;margin:6px;border-radius:50%;background:#fff;animation:pl 1s infinite}@keyframes pl{50%{opacity:.25}}
+.tab span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.main{flex:1;min-height:0;display:flex;flex-direction:column;overflow:auto}
+.hero{flex:1;display:flex;align-items:center;justify-content:center;padding:0 24px;min-height:120px}
+.hero svg{width:100%;max-width:640px;height:auto}
+.box{margin:8px 10px 12px;background:var(--pn);border:1px solid var(--ln);border-radius:18px;padding:14px 14px 12px}
+.box textarea{width:100%;background:none;border:0;outline:0;color:var(--tx);font:inherit;resize:none;padding:0 2px;min-height:44px}
+.box textarea::placeholder{color:var(--mut)}
+.bar{display:flex;align-items:center;gap:6px;margin-top:6px}
+.mdl{background:none;border:0;color:var(--tx);display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;min-width:0}
+.mdl span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}
+.send{margin-left:auto;width:44px;height:40px;border-radius:10px;border:0;background:#3a3a3a;color:#fff;display:flex;align-items:center;justify-content:center}
+.send.on{background:#fff;color:#000}
+.meta{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 16px 22px;color:var(--mut)}
+.chip{background:none;border:0;display:flex;align-items:center;gap:8px;color:var(--tx)}
+.chip b{background:#6b6b6b;color:#fff;border-radius:6px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.git{display:flex;align-items:center;gap:8px;font-size:14px}
+.banner{display:flex;align-items:center;gap:8px;padding:12px 18px;color:var(--mut);font-size:14px;border-top:1px solid transparent}
+.banner button{background:none;border:0;color:var(--mut);padding:4px}.banner .t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;cursor:pointer}
+.msgs{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:12px}
+.m{white-space:pre-wrap;word-break:break-word}
+.m.user{background:var(--pn2);border:1px solid var(--ln);border-radius:14px;padding:10px 14px;align-self:flex-end;max-width:95%}
+.m.assistant{padding:0 2px}
+.m pre{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:10px;overflow-x:auto;font-size:13px;white-space:pre-wrap;word-break:break-word}
+.m code{background:var(--pn);border-radius:5px;padding:1px 5px;font-size:13px}
+.tool{color:var(--mut);font-size:13px;border-left:2px solid var(--ln);padding-left:10px}
+.err{color:#f87171;border:1px solid #4a2222;border-radius:12px;padding:10px 12px;font-size:14px}
+.dots{color:var(--mut)}
+.ov{position:fixed;inset:0;background:#000a;display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sh{background:var(--pn);border:1px solid var(--ln);border-radius:20px 20px 0 0;width:100%;max-width:760px;max-height:88vh;overflow:auto;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.sh h3{margin:0 0 10px;font-size:16px}
+.it{display:flex;align-items:center;gap:10px;padding:12px 8px;border-top:1px solid var(--ln);cursor:pointer}.it:first-of-type{border:0}
+.it.on{color:#fff;font-weight:600}.it small{color:var(--mut);display:block;font-weight:400}.g{flex:1;min-width:0}
+.pv{color:var(--mut);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 2px}
+.sh input{width:100%;margin:4px 0 12px;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:12px;padding:11px 13px;font:inherit}
+.bt{background:#fff;color:#000;border:0;border-radius:12px;padding:11px 16px;font-weight:600}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#2a2a2a;border:1px solid var(--ln);padding:10px 16px;border-radius:12px;z-index:20;max-width:90vw;font-size:14px}
+
+.mut{color:var(--mut);font-size:13px}.note{align-self:center;color:#fbbf24;border:1px solid #3a2f12;background:#1a1608;border-radius:10px;padding:6px 12px;font-size:13px;text-align:center}
+pre.cmd{background:var(--bg);border:1px solid var(--ln);padding:10px;border-radius:10px;overflow-x:auto;font-size:12px}
+.think{color:var(--mut);font-size:13px;margin-bottom:8px}.think summary{cursor:pointer}
+.it select{background:var(--pn2);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:6px;max-width:34vw;font:inherit;font-size:13px}
+.cb{border:1px solid var(--ln);border-radius:10px;overflow:hidden;margin:8px 0;white-space:normal}
+.cp{display:block;width:100%;text-align:right;background:var(--pn2);border:0;border-bottom:1px solid var(--ln);color:var(--mut);padding:7px 12px;font-size:13px}.cp:active{color:var(--tx)}
+.cb pre{margin:0;border:0;border-radius:0}
+.box{border-radius:24px;transition:border-color .2s,box-shadow .2s}.box:focus-within{border-color:#3d3d3d;box-shadow:0 0 0 3px #ffffff0d}
+.send{width:38px;height:38px;border-radius:50%}.send.on{background:linear-gradient(135deg,#8b5cf6,#22d3ee);color:#fff}
+body.typing .meta{display:none}body.typing .hero svg{display:none}body.typing .box{margin-bottom:8px}
+</style></head><body><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s);
+const LS={g(k,d){try{return localStorage.getItem(k)??d}catch(e){return d}},s(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let cfg={url:LS.g('zu','http://'+(location.hostname||'localhost')+':4096'),user:LS.g('zn','opencode'),pw:LS.g('zp','')};
+let prov=null,conf=null,projs=[],dir=LS.g('zd',''),selM=LS.g('zm',''),branch='',sess=[],sheet='',sheetMsg='',banner=LS.g('zb','1')==='1',toastT=null;
+let tabs=[],act=null,drawn=null,timers={};
+// Modelos da NVIDIA (respondem pelo server.py em /chat), do melhor ao mais leve para programar.
+const NV=[
+ {id:'nvidia/nemotron-3-ultra-550b-a55b',name:'Nemotron 3 Ultra',lv:1,tag:'Mais avançado',desc:'o maior modelo, para código complexo e bugs difíceis'},
+ {id:'nvidia/nemotron-3.5-super-vl-120b-a12b',name:'Nemotron 3.5 Super VL',lv:2,tag:'Equilibrado',desc:'boa qualidade com velocidade, para o dia a dia'},
+ {id:'nvidia/nemotron-3.5-lightning-30b-a3b',name:'Nemotron 3.5 Lightning',lv:3,tag:'Rápido',desc:'ajustes e dúvidas curtas de código'},
+ {id:'minimaxai/minimax-m3.1-flash',name:'MiniMax M3.1 Flash',lv:4,tag:'Leve',desc:'tarefas simples e respostas imediatas'}
+];
+const nvOf=v=>NV.find(m=>'nv:'+m.id===v);
+const NVSYS='Você é um assistente de programação. Responda em português do Brasil, com código em blocos markdown e explicações diretas.';
+// Projetos (organização local): agrupam as sessões. '' = todos, '-' = sem projeto.
+let PJ=[],PS={},curPj=LS.g('zpa','-');try{PJ=JSON.parse(LS.g('zpj','[]'));PS=JSON.parse(LS.g('zps','{}'))}catch(e){}
+if(!curPj||(curPj!=='-'&&!PJ.some(p=>p.id===curPj)))curPj='-';
+const savePj=()=>{LS.s('zpj',JSON.stringify(PJ));LS.s('zps',JSON.stringify(PS));LS.s('zpa',curPj)};
+const pjName=id=>id==='-'?'Sem projeto':(PJ.find(p=>p.id===id)?.name||'Sem projeto');
+const newPj=()=>curPj&&curPj!=='-'?curPj:'';
+const tabPj=t=>t.sid?(PS[t.sid]||''):(t.pj||'');
+const inPj=t=>!curPj||tabPj(t)===(curPj==='-'?'':curPj);
+const inSess=s=>!curPj||(PS[s.id]||'')===(curPj==='-'?'':curPj);
+const visTabs=()=>tabs.filter(inPj);
+const pjCount=id=>Object.values(PS).filter(v=>v===id).length+tabs.filter(t=>!t.sid&&t.pj===id&&t.msgs.length).length;
+function fixAct(){const v=visTabs();if(!v.includes(cur())){if(v.length)act=v[0].k;else{const n=mk();tabs.push(n);act=n.k}persist()}}
+function pjSel(id){if(!PJ.length)return '';return `<select onclick="event.stopPropagation()" onchange="movS('${id}',this.value)" title="Mover para projeto" aria-label="Mover para projeto"><option value="">Sem projeto</option>${PJ.map(p=>`<option value="${p.id}" ${PS[id]===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}</select>`}
+function pjSheet(){
+ const it=(id,nm,sub,x)=>`<div class="it ${curPj===id?'on':''}" onclick="setPj('${id}')"><div class="g">${esc(nm)}<small>${sub}</small></div>${x||''}</div>`;
+ return '<h3>Projetos</h3><div class="mut">Separe suas sessões por projeto para ficar mais organizado.</div><input id="pjn" placeholder="Nome do novo projeto" maxlength="40"><button class="bt" onclick="addPj()">Criar projeto</button>'
+  +PJ.map(p=>{const n=pjCount(p.id);return it(p.id,p.name,n+(n===1?' sessão':' sessões'),`<button class="ico" style="color:#f87171;gap:6px;align-items:center;${pjDel===p.id?'background:#3a1515;border-radius:10px':''}" onclick="event.stopPropagation();delPj('${p.id}')" aria-label="Apagar projeto ${esc(p.name)}">${ic('trash')}<span style="font-size:13px">${pjDel===p.id?'Toque para confirmar':'Apagar'}</span></button>`)}).join('')
+  +it('-','Sem projeto','sessões não organizadas')}
+const openPjs=()=>{sheet='pjs';draw()};
+function setPj(id){curPj=id;savePj();sheet='';fixAct();draw();load(cur()).then(()=>draw())}
+function addPj(){const el=$('#pjn'),n=(el?.value||'').trim().slice(0,40);
+ if(!n){toast('Digite um nome para o projeto');return}
+ if(PJ.some(p=>p.name.toLowerCase()===n.toLowerCase())){toast('Já existe um projeto com esse nome');return}
+ const p={id:'p'+Math.random().toString(36).slice(2,8),name:n};PJ.push(p);setPj(p.id)}
+let pjDel='';
+function delPj(id){if(pjDel!==id){pjDel=id;draw();setTimeout(()=>{if(pjDel===id){pjDel='';if(sheet==='pjs')draw()}},4000);return}pjDel='';
+ PJ=PJ.filter(p=>p.id!==id);Object.keys(PS).forEach(k=>{if(PS[k]===id)delete PS[k]});tabs.forEach(t=>{if(t.pj===id)t.pj=''});
+ if(curPj===id)curPj='-';savePj();fixAct();draw();toast('Projeto apagado')}
+function movS(id,v){if(v)PS[id]=v;else delete PS[id];savePj();fixAct();draw()}
+const I={grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17.5 14v7M14 17.5h7"/>',edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',plus:'<path d="M12 5v14M5 12h14"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',up:'<path d="M12 19V5M5 12l7-7 7 7"/>',dn:'<path d="m6 9 6 6 6-6"/>',rt:'<path d="m9 6 6 6-6 6"/>',git:'<circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7M18 10.5c0 4-12 2-12 5"/>',cube:'<path d="M12 3 4 7v10l8 4 8-4V7z"/><path d="M4 7l8 4 8-4M12 11v10"/>',folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>'};
+const ic=n=>`<svg class="i" viewBox="0 0 24 24">${I[n]}</svg>`;
+const G={z:["00000","11111","00010","00100","01000","10000","11111"],y:["00000","10001","10001","10001","01111","00001","01110"],x:["00000","10001","01010","00100","01010","10001","10001"],c:["00000","01110","10000","10000","10000","10001","01110"],o:["00000","01110","10001","10001","10001","10001","01110"],d:["00001","00001","01101","10011","10001","10011","01101"],e:["00000","01110","10001","11111","10000","10001","01110"]};
+function wm(){const w='zyxcode';let x=0,r='';[...w].forEach((ch,i)=>{r+=`<g fill="var(--wm${i<3?'':'2'})">`;G[ch].forEach((row,y)=>[...row].forEach((b,k)=>{if(b==='1')r+=`<rect x="${x+k}" y="${y}" width="1.02" height="1.02"/>`}));r+='</g>';x+=6});
+ return `<svg viewBox="0 0 ${x-1} 7" shape-rendering="crispEdges">${r}</svg>`}
+var SD={},listErr='';
+async function api(p,o={}){const u=new URL(cfg.url.replace(/\/$/,'')+p);{let d=dir;const m=p.match(/^\/session\/([^\/?]+)/);if(m&&SD[m[1]])d=SD[m[1]];if(d&&!o.nodir&&!u.searchParams.has('directory'))u.searchParams.set('directory',d)}
+ const h={'Content-Type':'application/json'};if(cfg.pw)h.Authorization='Basic '+btoa(cfg.user+':'+cfg.pw);
+ const r=await fetch(u,{...o,headers:h,body:o.body?JSON.stringify(o.body):undefined});
+ if(!r.ok){const e=new Error(r.status===401?'Senha incorreta (401)':'Erro '+r.status);e.code=r.status;throw e}
+ const t=await r.text();try{return JSON.parse(t)}catch(e){return t}}
+function toast(t){clearTimeout(toastT);document.querySelectorAll('.toast').forEach(e=>e.remove());const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);toastT=setTimeout(()=>d.remove(),3500)}
+const base=p=>(p||'').split('/').filter(Boolean).pop()||p||'projeto';
+const mname=v=>{if(!v)return 'Modelo padrão';if(v.startsWith('nv:'))return nvOf(v)?.name||v.slice(3);const [p,...m]=v.split('/');const id=m.join('/');return prov?.providers?.find(x=>x.id===p)?.models?.[id]?.name||id};
+async function init(){
+ try{prov=await api('/config/providers');conf=await api('/config');if(!selM&&conf.model)selM=conf.model}catch(e){if(e.code===401||!prov){draw();return openSettings(e.message==='Failed to fetch'?'Sem conexão com o servidor':e.message)}}
+ try{projs=await api('/project')}catch(e){}
+ if(!dir&&projs.length){const p=projs.find(x=>x.worktree&&x.worktree!=='/')||projs[0];dir=p.worktree||'';LS.s('zd',dir)}
+ await vcs();draw()}
+async function vcs(){branch='';try{const v=await api('/vcs');branch=v.branch||''}catch(e){}}
+function fx(t){return esc(t).split(/(```(?:\w+)?\n?[\s\S]*?```)/g).map((p,i)=>i%2?p.replace(/```(?:\w+)?\n?([\s\S]*?)```/,'<div class="cb"><button class="cp" type="button">Copiar</button><pre>$1</pre></div>'):p.replace(/`([^`\n]+)`/g,'<code>$1</code>').replace(/^#{1,4} +(.+)$/gm,'<b>$1</b>').replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>')).join('')}
+function cpTxt(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);return new Promise((ok,no)=>{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(a);a.focus();a.select();a.setSelectionRange(0,a.value.length);let r=false;try{r=document.execCommand('copy')}catch(e){}a.remove();r?ok():no()})}
+document.addEventListener('click',e=>{const b=e.target.closest('.cp');if(!b)return;const pr=b.nextElementSibling;cpTxt(pr.textContent.replace(/\s+$/,'')).then(()=>{b.textContent='Copiado ✓'},()=>{b.textContent='Não copiou'});setTimeout(()=>{b.textContent='Copiar'},1600)});
+function sheetHtml(){
+ if(!sheet)return '';let b='';
+ if(sheet==='models'){const ps=prov?.providers||[];b='<h3>Modelo</h3><div class="it" onclick="sheet=\'fb\';draw()"><div class="g">Troca automática de IA<small>'+(fauto?'Ligada':'Desligada')+' · muda sozinho quando um modelo atinge o limite</small></div></div>'+nvSheet()+(ps.map(p=>`<div class="pv">${esc(p.name)}</div>`+Object.entries(p.models||{}).map(([id,m])=>{const v=p.id+'/'+id;return `<div class="it ${v===selM?'on':''}" onclick="pickM('${esc(v)}')"><div class="g">${esc(m.name||id)}</div></div>`}).join('')).join('')||'<div class="mut">Nenhum modelo carregado</div>')}
+ if(sheet==='pjs')b=pjSheet();
+ if(sheet==='projs')b='<h3>Pasta do servidor</h3>'+(projs.map(p=>`<div class="it ${p.worktree===dir?'on':''}" onclick="pickP('${esc(p.worktree)}')"><div class="g">${esc(base(p.worktree))}<small>${esc(p.worktree)}</small></div></div>`).join('')||'<div>Nenhum projeto encontrado</div>');
+ if(sheet==='list')b='<h3>Sessões</h3>'+(sess.map(s=>`<div class="it"><div class="g" onclick="openS('${s.id}')">${esc(s.title||s.id)}<small>${PS[s.id]?esc(pjName(PS[s.id]))+' · ':''}${s.time?.updated?new Date(s.time.updated).toLocaleString('pt-BR'):''}</small></div>${pjSel(s.id)}<button class="ico" onclick="delS('${s.id}')">${ic('x')}</button></div>`).join('')||'<div class="mut">'+(listErr?esc(listErr):'Nenhuma sessão encontrada no servidor OpenCode.')+'</div>');
+ if(sheet==='prov')b='<h3>Outros provedores</h3><p>Conecte provedores no servidor (celular A) e reinicie o <code>opencode serve</code>:</p><pre class="cmd">opencode auth login</pre>';
+
+ if(sheet==='fb'){const cu=cur()?.model||selM||'',pv=fbList(cu,[cu]).slice(0,4),cl=Object.entries(cd()).filter(([v,u])=>u>Date.now());
+  b=`<h3>Troca automática de IA</h3>
+  <div class="it" onclick="tgFb()"><div class="g">Trocar sozinho ao atingir o limite<small>${fauto?'Ligado':'Desligado'}</small></div><div>${fauto?'●':'○'}</div></div>
+  <div class="pv">Como escolher a reserva</div>
+  <div class="it ${fmode==='tier'?'on':''}" onclick="setFm('tier')"><div class="g">Mesmo patamar (automático)<small>Escolhe modelos parecidos, de preferência de outro provedor (ex.: ChatGPT → Gemini).</small></div></div>
+  <div class="it ${fmode==='manual'?'on':''}" onclick="setFm('manual')"><div class="g">Lista manual<small>Você define a ordem das reservas.</small></div></div>
+  <div class="pv">Se ${esc(mname(cu))} atingir o limite</div>
+  ${pv.map((x,i)=>`<div class="it"><div class="g">${i+1}. ${esc(mname(x.v))}<small>${esc(x.v.split('/')[0])} · ${TN[tierOf(x.v)]}${x.tag}</small></div></div>`).join('')||'<div class="mut">Nenhuma reserva disponível. Conecte outro provedor no servidor (opencode auth login).</div>'}
+  ${fmode==='manual'?'<div class="pv">Escolha a ordem (toque para marcar)</div>'+allModels().map(v=>{const i=fchain.indexOf(v);return `<div class="it ${i>=0?'on':''}" onclick="tgChain('${esc(v)}')"><div class="g">${esc(mname(v))}<small>${esc(v.split('/')[0])}</small></div><div>${i>=0?i+1:''}</div></div>`}).join(''):''}
+  ${cl.length?'<div class="pv">No limite agora</div>'+cl.map(([v,u])=>`<div class="it"><div class="g">${esc(mname(v))}<small>libera em ~${Math.max(1,Math.round((u-Date.now())/6e4))} min</small></div></div>`).join('')+'<button class="bt" onclick="clrCool()">Limpar</button>':''}`}
+ if(sheet==='set')b=`<h3>Servidor</h3>${sheetMsg?`<p style="color:#f87171">${esc(sheetMsg)}</p>`:''}URL<input id="u" value="${esc(cfg.url)}" inputmode="url">Usuário<input id="us" value="${esc(cfg.user)}">Senha<input id="pw" type="password" value="${esc(cfg.pw)}"><button class="bt" onclick="saveCfg()">Salvar e conectar</button><div class="it" style="margin-top:12px" onclick="sheet='fb';draw()"><div class="g">Troca automática de IA<small>${fauto?'Ligada':'Desligada'}</small></div></div>`;
+ return `<div class="ov" onclick="if(event.target===this){sheet='';draw()}"><div class="sh">${b}</div></div>`}
+function nvSheet(){return '<div class="pv">NVIDIA · para programar</div><div class="mut">Do mais avançado ao mais leve.</div>'+NV.map(m=>{const v='nv:'+m.id;return `<div class="it ${v===selM?'on':''}" onclick="pickM('${esc(v)}')"><div class="g">${esc(m.name)}<small>${esc(m.tag)} · ${esc(m.desc)}</small></div><div>#${m.lv}</div></div>`}).join('')}
+let _x;
+
+let fauto=LS.g('zfa','1')==='1',fmode=LS.g('zfm','tier'),fchain=[];try{fchain=JSON.parse(LS.g('zc','[]'))}catch(e){}
+const TN={top:'Alto',fast:'Rápido',free:'Gratuito'};
+function tierOf(v){const id=v.toLowerCase();if(/free|big-pickle|space-bunny/.test(id))return 'free';if(/(^|[^a-z])(flash|mini|haiku|lite|nano|small|tiny|fast)/.test(id))return 'fast';return 'top'}
+const allModels=()=>(prov?.providers||[]).flatMap(p=>Object.keys(p.models||{}).map(id=>p.id+'/'+id));
+const cd=()=>{try{return JSON.parse(LS.g('zl','{}'))}catch(e){return {}}};
+const cooling=v=>(cd()[v]||0)>Date.now();
+function markCool(v,er){const ra=parseInt(er?.data?.responseHeaders?.['retry-after']);const c=cd();c[v]=Date.now()+(ra>0?ra*1000:30*60e3);LS.s('zl',JSON.stringify(c))}
+function fbList(cu,tried){
+ const c=cd(),ok=v=>!tried.includes(v)&&!((c[v]||0)>Date.now()),out=[];
+ if(fmode==='manual'&&fchain.length){fchain.filter(ok).forEach(v=>out.push({v,tag:''}));return out}
+ const tt=tierOf(cu),order=tt==='top'?['top','fast','free']:tt==='fast'?['fast','free']:['free'],pr=cu.split('/')[0];
+ order.forEach((tr,i)=>{allModels().filter(v=>ok(v)&&tierOf(v)===tr).sort((a,b)=>(a.split('/')[0]===pr)-(b.split('/')[0]===pr)).forEach(v=>out.push({v,tag:i?' (patamar inferior)':''}))});
+ return out}
+function lastErr(ms){for(let i=ms.length-1;i>=0;i--){const m=ms[i];if(m.info?.role==='assistant')return m.info.error||null}return null}
+function isLimit(er){if(!er)return false;const tx=(er.name||'')+' '+(er.data?.message||'')+' '+(er.data?.responseBody||''),sc=er.data?.statusCode;
+ return [429,402,529].includes(sc)||/limit|quota|rate|429|usage|exceed|insufficient|credit|overload|capacity/i.test(tx)}
+const note=(t,text)=>{(t.notes=t.notes||[]).push({at:t.msgs.length,text})};
+const tgFb=()=>{fauto=!fauto;LS.s('zfa',fauto?'1':'0');draw()};
+const setFm=m=>{fmode=m;LS.s('zfm',m);draw()};
+const tgChain=v=>{const i=fchain.indexOf(v);if(i>=0)fchain.splice(i,1);else fchain.push(v);LS.s('zc',JSON.stringify(fchain));draw()};
+const clrCool=()=>{LS.s('zl','{}');draw()};
+const uid=()=>'t'+Math.random().toString(36).slice(2,8);
+const cur=()=>tabs.find(t=>t.k===act);
+const mk=(sid,title)=>({k:uid(),sid:sid||null,title:title||'',msgs:[],wait:false,draft:'',loaded:!sid,model:'',notes:[],pj:newPj()});
+const blankTab=t=>t&&!t.sid&&!t.msgs.length;
+const ttl=t=>t.sid?(sess.find(x=>x.id===t.sid)?.title||t.title||'Sessão'):(t.title||'Nova sessão');
+function persist(){const L=tabs.filter(t=>t.sid||t.msgs.length);LS.s('zt',JSON.stringify({t:L.map(t=>t.sid?{sid:t.sid,title:t.title}:{title:t.title,model:t.model,msgs:t.msgs.slice(-60)}),a:cur()?.sid||null,ai:L.indexOf(cur())}))}
+function restore(){try{localStorage.removeItem('zh')}catch(e){}let o=null;try{o=JSON.parse(LS.g('zt','null'))}catch(e){}
+ tabs=(o?.t||[]).map(x=>{const t=mk(x.sid,x.title);if(!x.sid){t.msgs=x.msgs||[];t.model=x.model||''}return t});if(!tabs.length)tabs.push(mk());
+ act=(tabs[o?.ai]||tabs.find(t=>t.sid&&t.sid===o?.a)||tabs[0]).k}
+const stop=k=>{clearInterval(timers[k]);delete timers[k]};
+async function load(t){if(!t||!t.sid||t.loaded)return;try{t.msgs=await api('/session/'+t.sid+'/message');t.loaded=true}catch(e){closeTab(t.k,true)}}
+function switchTab(k){act=k;persist();draw();load(cur()).then(()=>{if(act===k)draw()})}
+function newTab(){sheet='';const b=tabs.find(blankTab);if(b){b.pj=newPj();act=b.k}else{const n=mk();tabs.push(n);act=n.k}persist();draw()}
+function closeTab(k,silent){stop(k);const i=tabs.findIndex(t=>t.k===k);if(i<0)return;tabs.splice(i,1);if(!tabs.length)tabs.push(mk());
+ if(act===k||!cur()){let v=visTabs();if(!v.length){const n=mk();tabs.push(n);v=[n]}act=(tabs.slice(i).find(inPj)||v[v.length-1]).k}persist();if(!silent)draw()}
+function msgs(){
+ const t=cur();if(!t)return '';
+ const nt=n=>`<div class="note">${esc(n.text)}</div>`,ns=t.notes||[];
+ let h=ns.filter(n=>n.at===0).map(nt).join('');
+ t.msgs.forEach((m,i)=>{const ps=m.parts||[],tx=ps.filter(p=>p.type==='text').map(p=>p.text).join('\n'),rs=ps.filter(p=>p.type==='reasoning').map(p=>p.text).join('');
+  const tl=ps.filter(p=>p.type==='tool').map(p=>`<div class="tool">${esc(p.tool)} · ${esc(p.state?.status||'')}${p.state?.title?' · '+esc(p.state.title):''}</div>`).join('');
+  const er=m.info?.error?`<div class="err">${esc(m.info.error.name||'Erro')}: ${esc(m.info.error.data?.message||'')}</div>`:'';
+  if(tx||tl||er||rs)h+=`<div class="m ${m.info.role}">${rs?'<details class="think"'+(tx?'':' open')+'><summary>Raciocínio</summary>'+esc(rs)+'</details>':''}${tx?fx(tx):''}${tl}${er}</div>`;
+  h+=ns.filter(n=>n.at===i+1).map(nt).join('')});
+ h+=ns.filter(n=>n.at>t.msgs.length).map(nt).join('');
+ if(t.wait)h+='<div class="dots">Pensando…</div>';return h}
+function inputBox(){return `<div class="box"><textarea id="in" rows="2" placeholder="Pergunte qualquer coisa, / para comandos, @ para contexto…" oninput="$('#sd').classList.toggle('on',!!this.value.trim())"></textarea>
+ <div class="bar"><button class="ico" onclick="toast('Anexos ainda não disponíveis')">${ic('plus')}</button>
+ <button class="mdl" onclick="openModels()">${ic('cube')}<span>${esc(mname(cur()?.model||selM))}</span>${ic('dn')}</button>
+ <button class="send" id="sd" onclick="send()">${ic('up')}</button></div></div>`}
+function draw(){
+ if(drawn){const o=tabs.find(x=>x.k===drawn),d=$('#in');if(o&&d)o.draft=d.value}
+ const t=cur();
+ let h=`<div class="tabs"><button class="ico" onclick="openList()">${ic('grid')}</button><button class="ico" style="${curPj&&curPj!=='-'?'color:var(--tx)':''}" onclick="openPjs()" title="Projetos" aria-label="Projetos">${ic('folder')}</button>
+ <div class="tl">${visTabs().map(x=>`<div class="tab ${x.k===act?'on':''}" onclick="switchTab('${x.k}')">${x.wait?'<i class="spin"></i>':ic('edit')}<span>${esc(ttl(x))}</span><button class="ico" style="padding:0" onclick="event.stopPropagation();closeTab('${x.k}')">${ic('x')}</button></div>`).join('')}</div>
+ <button class="ico" onclick="newTab()">${ic('plus')}</button><button class="ico" onclick="openSettings()">${ic('gear')}</button></div>`;
+ if(blankTab(t)){
+  h+=`<div class="main"><div class="hero">${wm()}</div>${inputBox()}
+  <div class="meta"><button class="chip" onclick="openPjs()"><b>${esc(pjName(curPj)[0].toUpperCase())}</b>${esc(pjName(curPj))}${ic('dn')}</button>
+  <div class="git">${ic('git')}${esc(branch||'Sem Git')}</div></div></div>`;
+  if(banner)h+=`<div class="banner"><div class="t" onclick="openProv()">Conecte-se a mais de 75 provedores para usar outros modelos</div><button onclick="openProv()">${ic('rt')}</button><button onclick="banner=false;LS.s('zb','0');draw()">${ic('x')}</button></div>`;
+ }else h+=`<div class="main" id="mm"><div class="msgs" id="ml">${msgs()}</div></div>${inputBox()}`;
+ $('#app').innerHTML=h+sheetHtml();
+ drawn=t?t.k:null;
+ const d=$('#in');if(d&&t){d.value=t.draft||'';$('#sd')?.classList.toggle('on',!!d.value.trim())}
+ scrollEnd();$('.tab.on')?.scrollIntoView({inline:'nearest',block:'nearest'})
+}
+function scrollEnd(){const m=$('#mm');if(m)m.scrollTop=m.scrollHeight}
+function updMsgs(){const e=$('#ml');if(e){e.innerHTML=msgs();scrollEnd()}}
+
+const openModels=()=>{sheet='models';draw()};const openProjs=()=>{sheet='projs';draw()};const openProv=()=>{sheet='prov';draw()};
+const openSettings=m=>{sheetMsg=typeof m==='string'?m:'';sheet='set';draw()};
+async function openList(){let er='';sess=[];
+ try{sess=await api('/session')}catch(e){er=e.message}
+ if(!er&&!(sess||[]).length){try{sess=await api('/session',{nodir:true})}catch(e){er=e.message}}
+ sess=(Array.isArray(sess)?sess:[]).sort((a,b)=>(b.time?.updated||0)-(a.time?.updated||0));sess.forEach(x=>{if(x.directory)SD[x.id]=x.directory});
+ listErr=er;sheet='list';draw()}
+const pickM=v=>{selM=v;LS.s('zm',v);if(cur())cur().model=v;sheet='';draw()};
+async function pickP(d){dir=d;LS.s('zd',d);sheet='';await vcs();draw()}
+function openS(id){sheet='';let t=tabs.find(x=>x.sid===id);
+ if(!t){const c=cur();if(blankTab(c)){c.sid=id;c.loaded=false;t=c}else{t=mk(id);tabs.push(t)}}
+ t.title=sess.find(s=>s.id===id)?.title||t.title;if(!inPj(t)){curPj=tabPj(t)||'-';savePj()}act=t.k;persist();draw();load(t).then(()=>{if(act===t.k)draw()})}
+async function delS(id){if(!confirm('Apagar esta sessão?'))return;try{await api('/session/'+id,{method:'DELETE'});delete PS[id];savePj();const t=tabs.find(x=>x.sid===id);if(t)closeTab(t.k,true);await openList()}catch(e){toast(e.message)}}
+function saveCfg(){cfg={url:$('#u').value.trim(),user:$('#us').value.trim()||'opencode',pw:$('#pw').value};LS.s('zu',cfg.url);LS.s('zn',cfg.user);LS.s('zp',cfg.pw);sheet='';draw();init()}
+async function sendNv(t,el,tx,mid){
+ el.value='';t.draft='';t.nvb=true;if(!t.title)t.title=tx.slice(0,28);
+ const hist=t.msgs.filter(m=>m.info?.role==='user'||m.info?.role==='assistant').map(m=>({role:m.info.role,content:(m.parts||[]).filter(p=>p.type==='text').map(p=>p.text).join('\n')})).filter(m=>m.content);
+ t.msgs.push({info:{role:'user'},parts:[{type:'text',text:tx}]});persist();
+ const am={info:{role:'assistant'},parts:[]};t.msgs.push(am);t.wait=true;draw();
+ let out='',th='';
+ const upd=()=>{am.parts=[];if(th)am.parts.push({type:'reasoning',text:th});if(out)am.parts.push({type:'text',text:out});if(act===t.k)updMsgs()};
+ try{
+  const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:mid,messages:[{role:'system',content:NVSYS},...hist,{role:'user',content:tx}]})});
+  if(r.status===401||r.status===403)throw new Error('A NVIDIA recusou a chave do servidor (NVIDIA_API_KEY).');
+  if(!r.ok)throw new Error('O servidor respondeu '+r.status+'. O server.py está rodando?');
+  const rd=r.body.getReader(),dc=new TextDecoder();let buf='';
+  for(;;){const {done,value}=await rd.read();if(done)break;buf+=dc.decode(value,{stream:true});const ls=buf.split('\n');buf=ls.pop();
+   for(const l of ls){if(!l.startsWith('data:'))continue;const p=l.slice(5).trim();if(!p||p==='[DONE]')continue;
+    try{const d=JSON.parse(p).choices?.[0]?.delta;if(d?.reasoning_content){th+=d.reasoning_content;t.wait=false;upd()}if(d?.content){out+=d.content;t.wait=false;upd()}}catch(e){}}}
+  if(!out)throw new Error('O modelo não devolveu texto. Tente de novo ou troque de modelo.');
+ }catch(e){
+  am.parts=th?[{type:'reasoning',text:th}]:[];
+  am.info.error={name:'Erro',data:{message:e.message==='Failed to fetch'?'Sem conexão com o server.py.':e.message}};
+ }
+ t.wait=false;t.nvb=false;persist();if(tabs.includes(t))draw()
+}
+async function send(){
+ const t=cur(),el=$('#in');if(!t||!el)return;const tx=el.value.trim();if(!tx||t.wait)return;
+ {const mv=t.model||selM;if(mv&&mv.startsWith('nv:')){if(!t.nvb)sendNv(t,el,tx,mv.slice(3));return}}
+ el.value='';t.draft='';
+ try{
+  if(!t.sid){const s=await api('/session',{method:'POST',body:{}});t.sid=s.id;t.loaded=true;sess.unshift(s);if(t.pj){PS[s.id]=t.pj;savePj()}persist()}
+  const id=t.sid;let model=t.model||selM;
+  t.msgs.push({info:{role:'user'},parts:[{type:'text',text:tx}]});t.wait=true;draw();
+  timers[t.k]=setInterval(async()=>{try{const m=await api('/session/'+id+'/message');t.msgs=m;if(act===t.k)updMsgs()}catch(e){}},1500);
+  const tried=[model];
+  if(fauto&&model&&cooling(model)){const n=fbList(model,tried)[0];if(n){note(t,`${mname(model)} está no limite. Usando ${mname(n.v)}${n.tag}.`);model=n.v;t.model=model;tried.push(model);updMsgs()}}
+  for(let a=0;a<5;a++){
+   const body={parts:[{type:'text',text:tx}]};
+   if(model){const [p,...m]=model.split('/');body.model={providerID:p,modelID:m.join('/')}}
+   let er=null;
+   try{await api('/session/'+id+'/message',{method:'POST',body})}catch(e){if(e.code===429||e.code===402)er={name:'Limite',data:{statusCode:e.code}};else{toast(e.message);break}}
+   if(!er){try{t.msgs=await api('/session/'+id+'/message')}catch(e){}er=lastErr(t.msgs)}
+   if(!er||!isLimit(er)||!fauto)break;
+   markCool(model,er);
+   const n=fbList(model,tried)[0];
+   if(!n){note(t,`Limite em ${mname(model)}. Nenhuma reserva disponível agora.`);break}
+   note(t,`Limite em ${mname(model)}. Trocando para ${mname(n.v)}${n.tag}.`);
+   model=n.v;t.model=model;tried.push(model);if(act===t.k)updMsgs()
+  }
+  stop(t.k);
+  try{t.msgs=await api('/session/'+id+'/message')}catch(e){}
+  t.wait=false;
+  try{sess=(await api('/session')).sort((a,b)=>(b.time?.updated||0)-(a.time?.updated||0));t.title=sess.find(x=>x.id===id)?.title||t.title;persist()}catch(e){}
+  if(tabs.includes(t))draw();
+ }catch(e){t.wait=false;toast(e.message);if(e.code===401)openSettings(e.message);else draw()}
+}
+document.addEventListener('focusin',e=>{if(e.target.tagName==='TEXTAREA')document.body.classList.add('typing')});
+document.addEventListener('focusout',()=>setTimeout(()=>{if(document.activeElement?.tagName!=='TEXTAREA')document.body.classList.remove('typing')},300));
+restore();fixAct();draw();
+init().then(()=>{const m=location.hash.match(/^#s=(.+)$/);if(m)openS(decodeURIComponent(m[1]));else load(cur()).then(draw)});
+</script><!-- botão do chat com IA -->
+<style>
+#cbtn{position:fixed;right:12px;bottom:28%;z-index:9998;width:48px;height:48px;padding:0;border-radius:50%;border:1px solid #333;background:#141414;color:#fff;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 2px 10px #0008;display:flex;align-items:center;justify-content:center}
+#cbtn:focus-visible{outline:2px solid #76b900;outline-offset:2px}
+#cbox{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:none;padding-top:env(safe-area-inset-top)}
+#cbox.on{display:block}
+#cbox iframe{border:0;width:100%;height:100%}
+</style>
+<button id="cbtn" type="button" title="Chat com IA" aria-label="Abrir chat com IA">👾</button>
+<div id="cbox" role="dialog" aria-label="Chat com IA"></div>
+<script>
+(function(){
+  var b=document.getElementById("cbtn"),box=document.getElementById("cbox"),f=null;
+  if(window.parent!==window){b.remove();box.remove();return;}
+  function abrir(){ if(!f){ f=document.createElement("iframe"); f.src="chat.html"; f.title="Chat com IA"; box.appendChild(f); } box.classList.add("on"); }
+  function fechar(){ box.classList.remove("on"); b.focus(); }
+  b.addEventListener("click",abrir);
+  window.addEventListener("message",function(e){ if(e.origin===location.origin && e.data==="fechar-chat") fechar(); });
+})();
+</script>
+</body></html>
+<style>
+#cbtn{position:fixed;right:12px;bottom:28%;z-index:9998;width:48px;height:48px;padding:0;border-radius:50%;border:1px solid #333;background:#141414;color:#fff;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 2px 10px #0008;display:flex;align-items:center;justify-content:center}
+#cbtn:focus-visible{outline:2px solid #76b900;outline-offset:2px}
+#cbox{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:none;padding-top:env(safe-area-inset-top)}
+#cbox.on{display:block}
+#cbox iframe{border:0;width:100%;height:100%}
+</style>
+<button id="cbtn" type="button" title="Chat com IA" aria-label="Abrir chat com IA">👾</button>
+<div id="cbox" role="dialog" aria-label="Chat com IA"></div>
+<script>
+(function(){
+  var b=document.getElementById("cbtn"),box=document.getElementById("cbox"),f=null;
+  if(window.parent!==window){b.remove();box.remove();return;}
+  function abrir(){ if(!f){ f=document.createElement("iframe"); f.src="chat.html"; f.title="Chat com IA"; box.appendChild(f); } box.classList.add("on"); }
+  function fechar(){ box.classList.remove("on"); b.focus(); }
+  b.addEventListener("click",abrir);
+  window.addEventListener("message",function(e){ if(e.origin===location.origin && e.data==="fechar-chat") fechar(); });
+})();
+</script>
+</body></html>
